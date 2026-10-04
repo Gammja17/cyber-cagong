@@ -1,10 +1,16 @@
 // 서버 없이 P2P로 연결 (Trystero / Nostr 릴레이로 서로 찾음).
 // 방장 한 명이 StudyHost를 돌리고, 나머지는 방장에게 요청을 보냄. socket.io 비슷한 on/emit 인터페이스.
-import { joinRoom, selfId } from 'https://cdn.jsdelivr.net/npm/trystero@0.25.4/+esm';
+import { joinRoom, selfId, getRelaySockets } from 'https://cdn.jsdelivr.net/npm/trystero@0.25.4/+esm';
 import { StudyHost } from './host.js';
 
 const APP_ID = 'cyber-cagong-2026';
-const FIND_MS = 5000; // 이 시간 안에 방장을 못 찾으면 내가 방장
+const FIND_MS = 12000; // 이 시간 안에 방장을 못 찾으면 내가 방장
+// 직접 연결이 막힌 네트워크(휴대폰 데이터, 학교·회사 와이파이 등)용 우회 서버 (가입 없는 공개 TURN)
+const TURN = [{
+  urls: ['turn:openrelay.metered.ca:80', 'turn:openrelay.metered.ca:443', 'turns:openrelay.metered.ca:443?transport=tcp'],
+  username: 'openrelayproject',
+  credential: 'openrelayproject',
+}];
 
 export class Net {
   constructor(menu) {
@@ -23,7 +29,17 @@ export class Net {
 
   connect(code, fresh) {
     this.code = code;
-    this.room = joinRoom({ appId: APP_ID }, `cagong-${code}`);
+    this.room = joinRoom({ appId: APP_ID, turnConfig: TURN, relayConfig: { redundancy: 6 } }, `cagong-${code}`);
+    // 연결 상태 (화면에 표시): 중계망 몇 개 붙었는지, 친구 몇 명 연결됐는지
+    setInterval(() => {
+      const relays = Object.values(getRelaySockets());
+      this.fire('status', {
+        relays: relays.filter((ws) => ws.readyState === 1).length,
+        relayTotal: relays.length,
+        peers: Object.keys(this.room.getPeers()).length,
+        host: this.hostId === this.id ? 'me' : this.hostId ? 'other' : 'none',
+      });
+    }, 2000);
     this.c2h = this.room.makeAction('c2h');
     this.h2c = this.room.makeAction('h2c');
     this.lookAction = this.room.makeAction('look');

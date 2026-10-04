@@ -44,6 +44,8 @@ input:focus, textarea:focus { border-color: var(--accent); }
 .place { background: var(--panel); backdrop-filter: blur(8px); padding: 8px 14px; border-radius: 12px; border: 1px solid var(--line); }
 .place strong { font-family: 'Do Hyeon', sans-serif; font-size: 20px; font-weight: 400; }
 #inviteBtn { background: var(--panel); backdrop-filter: blur(8px); font-size: 13px; }
+#netStatus { background: var(--panel); border: 1px solid var(--line); border-radius: 99px; padding: 5px 10px; font-size: 12px; color: var(--muted); }
+#netStatus.bad { color: var(--warn); border-color: rgba(255, 138, 92, 0.5); }
 #memberList { list-style: none; margin: 0 0 0 auto; padding: 0; display: flex; gap: 6px; flex-wrap: wrap; }
 #memberList li { background: var(--panel); backdrop-filter: blur(8px); border: 1px solid var(--line); border-radius: 99px; padding: 5px 10px 5px 6px; font-size: 13px; display: flex; align-items: center; gap: 6px; }
 #memberList li .dot { width: 14px; height: 14px; border-radius: 50%; }

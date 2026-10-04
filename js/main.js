@@ -38,6 +38,7 @@ let cartStore = false;
 let micOn = false;
 let lastStudyMs = 0;
 let lastPhase = null;
+let joinedAt = Date.now();
 
 // ===================== 입장 =====================
 $('#joinForm').addEventListener('submit', async (e) => {
@@ -68,6 +69,7 @@ $('#joinForm').addEventListener('submit', async (e) => {
   if (typed) banner('친구들 찾는 중… 🔎', 6000);
 
   bindSocket();
+  joinedAt = Date.now();
   socket.connect(code, !typed);
   socket.emit('join', { name, decor: myDecor.filter((k) => unlocked().includes(k)) });
 });
@@ -88,6 +90,13 @@ function bindSocket() {
   socket.on('look', ({ id, yaw, pitch }) => scene.remoteLook(id, yaw, pitch));
   socket.on('notice', (msg) => banner(msg));
   socket.on('receipt', showReceipt);
+  socket.on('status', ({ relays, relayTotal, peers, host }) => {
+    const el = $('#netStatus');
+    const alone = state && state.members.length <= 1;
+    el.textContent = relays === 0 ? `🔴 중계망 연결 안 됨 (0/${relayTotal})`
+      : `${peers ? '🟢' : '🟡'} 중계망 ${relays}/${relayTotal} · 친구 ${peers}명 연결${host === 'me' ? ' · 내가 방장' : ''}`;
+    el.classList.toggle('bad', relays === 0 || (alone && peers === 0 && Date.now() - joinedAt > 20000));
+  });
 
   let last = '';
   setInterval(() => {
