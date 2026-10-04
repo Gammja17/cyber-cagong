@@ -1,0 +1,146 @@
+:root {
+  --bg: #11141a;
+  --panel: rgba(18, 22, 30, 0.74);
+  --line: rgba(255, 255, 255, 0.12);
+  --text: #f1efe8;
+  --muted: #a9adba;
+  --accent: #5fc9a0;
+  --accent2: #ffe08a;
+  --warn: #ff8a5c;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font-family: 'Gowun Dodum', 'Malgun Gothic', sans-serif; overflow: hidden; }
+button { font: inherit; color: inherit; cursor: pointer; border: 0; }
+[hidden] { display: none !important; }
+
+/* ---------- 로비 ---------- */
+#lobby { position: fixed; inset: 0; display: grid; place-items: center; padding: 16px; background: radial-gradient(ellipse at 50% 20%, #1f3a32 0%, #12161c 55%, #0a0c10 100%); }
+.lobby-card { width: min(380px, 100%); text-align: center; }
+.lantern { font-size: 60px; animation: bob 3s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translateY(-6px); } }
+h1 { font-family: 'Do Hyeon', sans-serif; font-weight: 400; font-size: 48px; margin: 8px 0 4px; color: var(--accent2); text-shadow: 0 0 18px rgba(95, 201, 160, 0.5); }
+.sub { color: var(--muted); line-height: 1.6; margin: 0 0 24px; }
+#joinForm { display: grid; gap: 12px; text-align: left; }
+#joinForm label { display: grid; gap: 6px; font-size: 14px; color: var(--muted); }
+input, textarea { font: inherit; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255, 255, 255, 0.06); color: var(--text); outline: none; }
+input:focus, textarea:focus { border-color: var(--accent); }
+.primary, #joinBtn { padding: 13px; border-radius: 14px; font-size: 18px; font-family: 'Do Hyeon', sans-serif; background: linear-gradient(180deg, #6fd8ad, #3fae84); color: #0b1f17; box-shadow: 0 6px 20px rgba(63, 174, 132, 0.3); }
+.primary:disabled { opacity: 0.4; }
+.ghost { background: rgba(255, 255, 255, 0.08); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; }
+.tip, .muted { color: var(--muted); font-size: 13px; }
+
+/* ---------- 공부방 ---------- */
+#app { position: fixed; inset: 0; }
+#view { position: absolute; inset: 0; }
+#view canvas { display: block; touch-action: none; cursor: grab; }
+#fade { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; transition: opacity 0.8s; }
+#fade.on { opacity: 1; }
+#peeNote { position: absolute; inset: 0; display: grid; place-items: end center; padding-bottom: 150px; pointer-events: none; font-family: 'Do Hyeon', sans-serif; font-size: 26px; color: #ffe08a; opacity: 0; transition: opacity 0.6s; box-shadow: inset 0 0 160px 30px rgba(255, 200, 40, 0.25); }
+#peeNote.on { opacity: 1; animation: shake 0.25s infinite; }
+@keyframes shake { 25% { transform: translateX(-1px); } 75% { transform: translateX(1px); } }
+
+#topbar { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; pointer-events: none; }
+#topbar > * { pointer-events: auto; }
+.place { background: var(--panel); backdrop-filter: blur(8px); padding: 8px 14px; border-radius: 12px; border: 1px solid var(--line); }
+.place strong { font-family: 'Do Hyeon', sans-serif; font-size: 20px; font-weight: 400; }
+#inviteBtn { background: var(--panel); backdrop-filter: blur(8px); font-size: 13px; }
+#memberList { list-style: none; margin: 0 0 0 auto; padding: 0; display: flex; gap: 6px; flex-wrap: wrap; }
+#memberList li { background: var(--panel); backdrop-filter: blur(8px); border: 1px solid var(--line); border-radius: 99px; padding: 5px 10px 5px 6px; font-size: 13px; display: flex; align-items: center; gap: 6px; }
+#memberList li .dot { width: 14px; height: 14px; border-radius: 50%; }
+#memberList li.talking { box-shadow: 0 0 0 2px var(--accent); }
+#memberList li .st { color: var(--muted); }
+
+#pomo { position: absolute; top: 62px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; align-items: center; background: var(--panel); backdrop-filter: blur(8px); border: 1px solid var(--line); border-radius: 99px; padding: 6px 8px 6px 16px; white-space: nowrap; }
+#pomo b { font-family: 'Nanum Gothic Coding', monospace; font-size: 20px; }
+#pomo.focus { border-color: rgba(255, 138, 92, 0.6); }
+#pomo.break { border-color: rgba(95, 201, 160, 0.8); }
+#pomoCount { color: var(--muted); font-size: 13px; }
+#pomoBtn { background: rgba(255, 255, 255, 0.1); border-radius: 99px; padding: 5px 12px; font-size: 13px; }
+
+#bladder { position: absolute; right: 12px; bottom: 92px; display: flex; align-items: center; gap: 6px; background: var(--panel); border: 1px solid var(--line); border-radius: 99px; padding: 5px 10px; }
+#bladder .bar { width: 90px; height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden; }
+#bladderFill { height: 100%; width: 0; background: linear-gradient(90deg, #8fe3c8, #ffe08a 60%, #ff8a5c); transition: width 0.6s; }
+
+#banner { position: absolute; top: 116px; left: 50%; transform: translateX(-50%) scale(0.9); opacity: 0; transition: 0.25s; background: rgba(63, 174, 132, 0.95); color: #0b1f17; padding: 10px 20px; border-radius: 99px; font-family: 'Do Hyeon', sans-serif; font-size: 22px; pointer-events: none; white-space: nowrap; max-width: calc(100% - 32px); overflow: hidden; text-overflow: ellipsis; }
+#banner.show { opacity: 1; transform: translateX(-50%) scale(1); }
+
+#feed { position: absolute; right: 12px; top: 116px; width: min(260px, 50vw); display: flex; flex-direction: column; gap: 4px; align-items: flex-end; pointer-events: none; }
+#feed div { background: var(--panel); padding: 5px 10px; border-radius: 10px; font-size: 13px; animation: feedIn 0.25s, feedOut 0.6s 4.4s forwards; }
+@keyframes feedIn { from { opacity: 0; transform: translateX(20px); } }
+@keyframes feedOut { to { opacity: 0; } }
+
+#chat { position: absolute; left: 12px; bottom: 92px; width: min(320px, calc(100% - 24px)); display: flex; flex-direction: column; gap: 6px; }
+#chatLog { max-height: 26vh; overflow-y: auto; display: flex; flex-direction: column; gap: 3px; font-size: 14px; mask-image: linear-gradient(to bottom, transparent, #000 25%); padding-top: 20px; }
+#chatLog div { background: rgba(0, 0, 0, 0.45); padding: 4px 9px; border-radius: 8px; align-self: flex-start; max-width: 100%; word-break: break-all; }
+#chatLog div b { margin-right: 6px; }
+#chatLog div.sys { color: var(--accent2); background: rgba(0, 0, 0, 0.3); font-size: 12px; }
+#chatInput { width: 100%; background: var(--panel); backdrop-filter: blur(8px); }
+
+#memo { position: absolute; right: 12px; top: 110px; bottom: 140px; width: min(300px, calc(100% - 24px)); background: rgba(250, 247, 238, 0.97); color: #222; border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4); z-index: 4; }
+.memo-head { display: flex; justify-content: space-between; align-items: center; }
+.memo-head .ghost { color: #222; padding: 4px 10px; }
+#memo input, #memo textarea { background: #fff; color: #222; border-color: #ddd; }
+#memo textarea { flex: 1; resize: none; font-family: 'Gowun Dodum', sans-serif; line-height: 1.6; }
+#todoList { list-style: none; margin: 0; padding: 0; max-height: 40%; overflow-y: auto; display: grid; gap: 4px; }
+#todoList li { display: flex; gap: 8px; align-items: center; font-size: 14px; }
+#todoList li.done span { text-decoration: line-through; color: #999; }
+#todoList li button { margin-left: auto; background: none; color: #bbb; }
+
+#actions { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 4px; background: var(--panel); backdrop-filter: blur(10px); border: 1px solid var(--line); border-radius: 18px; padding: 6px; max-width: calc(100% - 24px); overflow-x: auto; }
+#actions button { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 8px; border-radius: 12px; background: transparent; min-width: 54px; font-size: 12px; white-space: nowrap; }
+#actions button:hover { background: rgba(255, 255, 255, 0.1); }
+#actions button i { font-style: normal; font-size: 21px; }
+#actions button:disabled { opacity: 0.35; cursor: default; }
+#actions button.on { background: rgba(255, 224, 138, 0.18); }
+#actions button.off i { filter: grayscale(1); opacity: 0.5; }
+
+/* ---------- 모달 ---------- */
+.modal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); display: grid; place-items: center; padding: 16px; z-index: 10; }
+.sheet { width: min(420px, 100%); max-height: 90vh; overflow-y: auto; background: #1b1f29; border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
+.sheet h2 { font-family: 'Do Hyeon', sans-serif; font-weight: 400; margin: 0 0 14px; font-size: 26px; }
+.row { display: flex; gap: 8px; margin-top: 14px; }
+.row > * { flex: 1; }
+#menuList, #decorList { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+#menuList li, #decorList li { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: rgba(255, 255, 255, 0.04); border-radius: 12px; }
+#menuList li .nm, #decorList li .nm { flex: 1; }
+#menuList li .pr, #decorList li .pr { color: var(--muted); font-size: 13px; }
+#menuList li .qty { display: flex; align-items: center; gap: 6px; }
+#menuList li .qty button { width: 28px; height: 28px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); }
+#decorList li.locked { opacity: 0.45; }
+#decorList input { width: 20px; height: 20px; accent-color: var(--accent); }
+.cart { display: flex; justify-content: space-between; margin-top: 12px; padding: 10px 12px; background: rgba(95, 201, 160, 0.12); border-radius: 12px; font-size: 14px; }
+#venueChoices { display: grid; gap: 8px; }
+#venueChoices button { text-align: left; padding: 14px; border-radius: 14px; background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line); }
+#venueChoices button b { display: block; font-family: 'Do Hyeon', sans-serif; font-size: 20px; font-weight: 400; }
+#venueChoices button span { color: var(--muted); font-size: 13px; }
+.vote { text-align: center; }
+.timer { height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; overflow: hidden; }
+#voteTimer { height: 100%; background: var(--accent); width: 100%; }
+.slider { display: grid; gap: 4px; margin: 10px 0; font-size: 14px; color: var(--muted); }
+.slider input { padding: 0; accent-color: var(--accent); }
+.check { display: flex; gap: 8px; align-items: center; font-size: 14px; margin-top: 12px; }
+.check input { width: 18px; height: 18px; accent-color: var(--accent); }
+
+/* ---------- 공부 기록 ---------- */
+.receipt-wrap { display: flex; flex-direction: column; gap: 14px; width: min(380px, 100%); max-height: 92vh; }
+.receipt { background: #fbf8f0; color: #222; font-family: 'Nanum Gothic Coding', monospace; font-size: 13px; line-height: 1.7; padding: 22px 18px 30px; overflow-y: auto; min-height: 0; flex: 0 1 auto;
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 14px 100%;
+  mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 14px 100%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); animation: print 0.9s ease-out; }
+@keyframes print { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+.receipt h3 { text-align: center; margin: 0; font-size: 18px; }
+.receipt .c { text-align: center; }
+.receipt hr { border: 0; border-top: 1px dashed #999; margin: 10px 0; }
+.receipt .ln { display: flex; gap: 6px; }
+.receipt .ln .n { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.receipt .who { font-weight: 700; margin-top: 8px; }
+.receipt .tot { font-size: 16px; font-weight: 700; }
+.receipt .barcode { height: 40px; margin: 14px 8px 4px; background: repeating-linear-gradient(90deg, #222 0 2px, transparent 2px 4px, #222 4px 5px, transparent 5px 8px, #222 8px 11px, transparent 11px 12px); }
+
+@media (max-width: 640px) {
+  #feed { top: 160px; }
+  #chat { bottom: 84px; }
+  #chatLog { max-height: 18vh; }
+  #actions button { min-width: 46px; padding: 6px 4px; }
+  #bladder { bottom: 84px; }
+}

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>사이버 카공</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gowun+Dodum&family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+  </script>
+</head>
+<body>
+  <!-- 로비 -->
+  <section id="lobby">
+    <div class="lobby-card">
+      <div class="lantern">📚</div>
+      <h1>사이버 카공</h1>
+      <p class="sub">스터디카페 · 카페 · 도서관<br />친구들이랑 같이 앉아서 공부하자 (최대 6명)</p>
+      <form id="joinForm">
+        <label>이름<input id="nameInput" maxlength="12" placeholder="뭐라고 부를까" required /></label>
+        <label>방 코드<input id="roomInput" maxlength="6" placeholder="비우면 새 방 만들기" /></label>
+        <button type="submit" id="joinBtn">자리 잡기 ✏️</button>
+      </form>
+      <p class="tip" id="lifetimeTip"></p>
+    </div>
+  </section>
+
+  <!-- 공부방 -->
+  <section id="app" hidden>
+    <div id="view"></div>
+    <div id="fade"></div>
+    <div id="peeNote">🚽 화장실 가고 싶다…</div>
+
+    <header id="topbar">
+      <div class="place"><strong id="venueName">24시 스터디카페</strong></div>
+      <button id="inviteBtn" class="ghost" title="초대 링크 복사">방 <b id="roomCode">----</b> · 초대링크 복사</button>
+      <ul id="memberList"></ul>
+    </header>
+
+    <div id="pomo">
+      <span id="pomoPhase">⏱ 뽀모도로</span>
+      <b id="pomoTime">25:00</b>
+      <span id="pomoCount"></span>
+      <button id="pomoBtn">시작</button>
+    </div>
+
+    <div id="bladder" title="방광 게이지"><span>🚽</span><div class="bar"><div id="bladderFill"></div></div></div>
+
+    <div id="banner"></div>
+    <div id="feed"></div>
+
+    <div id="chat">
+      <div id="chatLog"></div>
+      <form id="chatForm"><input id="chatInput" maxlength="200" placeholder="Enter로 채팅…" autocomplete="off" /></form>
+    </div>
+
+    <aside id="memo" hidden>
+      <div class="memo-head"><b>📝 메모 · 할 일</b><button class="ghost" id="memoClose">✕</button></div>
+      <form id="todoForm"><input id="todoInput" maxlength="60" placeholder="할 일 추가 (Enter)" autocomplete="off" /></form>
+      <ul id="todoList"></ul>
+      <textarea id="memoText" placeholder="자유 메모 (내 기기에만 저장돼요)"></textarea>
+    </aside>
+
+    <nav id="actions">
+      <button id="orderBtn"><i>🥤</i><span>주문</span></button>
+      <button id="storeBtn"><i>🏪</i><span>편의점</span></button>
+      <button id="lampBtn"><i>💡</i><span>스탠드</span></button>
+      <button id="toiletBtn"><i>🚽</i><span>화장실</span></button>
+      <button id="memoBtn"><i>📝</i><span>메모</span></button>
+      <button id="decorBtn"><i>🎨</i><span>꾸미기</span></button>
+      <button id="pipBtn"><i>📌</i><span>미니 창</span></button>
+      <button id="moveBtn"><i>🚶</i><span>자리 이동</span></button>
+      <button id="endBtn"><i>📊</i><span>끝내기</span></button>
+      <button id="micBtn"><i>🎤</i><span>마이크</span></button>
+      <button id="settingsBtn"><i>⚙️</i><span>설정</span></button>
+    </nav>
+
+    <!-- 메뉴 -->
+    <div class="modal" id="menuModal" hidden>
+      <div class="sheet">
+        <h2 id="menuTitle">메뉴</h2>
+        <ul id="menuList"></ul>
+        <div class="cart"><span id="cartText">담은 거 없음</span><b id="cartTotal">0원</b></div>
+        <div class="row">
+          <button class="ghost" data-close>닫기</button>
+          <button id="orderSubmit" class="primary">주문하기</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 장소 이동 -->
+    <div class="modal" id="moveModal" hidden>
+      <div class="sheet">
+        <h2>어디로 옮길까?</h2>
+        <div id="venueChoices"></div>
+        <div class="row"><button class="ghost" data-close>그냥 있을래</button></div>
+      </div>
+    </div>
+
+    <!-- 투표 -->
+    <div class="modal" id="voteModal" hidden>
+      <div class="sheet vote">
+        <h2 id="voteTitle"></h2>
+        <p id="voteStatus"></p>
+        <div class="timer"><div id="voteTimer"></div></div>
+        <div class="row" id="voteButtons">
+          <button class="ghost" id="voteNo">난 더 있을래</button>
+          <button id="voteYes" class="primary">좋아!</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 꾸미기 -->
+    <div class="modal" id="decorModal" hidden>
+      <div class="sheet">
+        <h2>🎨 내 자리 꾸미기</h2>
+        <p class="muted" id="decorInfo"></p>
+        <ul id="decorList"></ul>
+        <div class="row"><button class="ghost" data-close>닫기</button></div>
+      </div>
+    </div>
+
+    <!-- 설정 -->
+    <div class="modal" id="settingsModal" hidden>
+      <div class="sheet">
+        <h2>⚙️ 설정</h2>
+        <label class="slider">전체 소리<input type="range" min="0" max="1" step="0.05" data-vol="master" /></label>
+        <label class="slider">분위기 (백색소음 · 주변 소리)<input type="range" min="0" max="1" step="0.05" data-vol="ambient" /></label>
+        <label class="slider">효과음 (주문 · 문 · 화장실 · 타이머)<input type="range" min="0" max="1" step="0.05" data-vol="sfx" /></label>
+        <label class="slider">친구 목소리<input type="range" min="0" max="1" step="0.05" data-vol="voice" /></label>
+        <label class="check"><input type="checkbox" id="autoMic" /> 뽀모도로 휴식 때만 마이크 자동으로 켜기</label>
+        <div class="row"><button class="ghost" data-close>닫기</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 공부 기록 -->
+  <div class="modal" id="receiptModal" hidden>
+    <div class="receipt-wrap">
+      <div class="receipt" id="receipt"></div>
+      <button id="receiptClose" class="primary">오늘도 수고했어 🏠</button>
+    </div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

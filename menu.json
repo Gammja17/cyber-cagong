@@ -1,0 +1,37 @@
+{
+  "studycafe": {
+    "name": "24시 스터디카페",
+    "orderVerb": "자판기",
+    "items": [
+      { "key": "water", "name": "생수", "price": 0, "kind": "drink", "servings": 6, "caffeine": 0, "model": "bottle", "color": "#cfe8ff" },
+      { "key": "cancoffee", "name": "캔커피", "price": 1200, "kind": "drink", "servings": 4, "caffeine": 1, "model": "can", "color": "#6b3a12" },
+      { "key": "ion", "name": "이온음료", "price": 1500, "kind": "drink", "servings": 5, "caffeine": 0, "model": "can", "color": "#3a7be8" }
+    ],
+    "store": [
+      { "key": "energy", "name": "에너지드링크", "price": 2200, "kind": "drink", "servings": 4, "caffeine": 2, "model": "can", "color": "#1f1f1f" },
+      { "key": "banana", "name": "바나나우유", "price": 1700, "kind": "drink", "servings": 4, "caffeine": 0, "model": "jar", "color": "#f6d65a" },
+      { "key": "icecoffee", "name": "편의점 아이스커피", "price": 1500, "kind": "drink", "servings": 6, "caffeine": 1, "model": "icecup", "color": "#3b2416" },
+      { "key": "kimbap", "name": "삼각김밥", "price": 1300, "kind": "food", "servings": 3, "model": "triangle", "color": "#1d2b1a" },
+      { "key": "chocobar", "name": "초코바", "price": 1500, "kind": "food", "servings": 3, "model": "bar", "color": "#5a2d14" }
+    ]
+  },
+  "cafe": {
+    "name": "카페 몽글",
+    "orderVerb": "주문",
+    "items": [
+      { "key": "americano", "name": "아이스 아메리카노", "price": 4500, "kind": "drink", "servings": 8, "caffeine": 1, "model": "icecup", "color": "#2e1a0f" },
+      { "key": "latte", "name": "카페라떼", "price": 5000, "kind": "drink", "servings": 7, "caffeine": 1, "model": "mug", "color": "#c89a6a" },
+      { "key": "vanilla", "name": "바닐라라떼", "price": 5500, "kind": "drink", "servings": 7, "caffeine": 1, "model": "icecup", "color": "#d9b48a" },
+      { "key": "icetea", "name": "복숭아 아이스티", "price": 4500, "kind": "drink", "servings": 7, "caffeine": 0, "model": "icecup", "color": "#e08a3a" },
+      { "key": "smoothie", "name": "딸기 스무디", "price": 6000, "kind": "drink", "servings": 6, "caffeine": 0, "model": "icecup", "color": "#e8506a" },
+      { "key": "cheesecake", "name": "치즈케이크", "price": 6500, "kind": "food", "servings": 6, "model": "cake", "color": "#f4dca0" },
+      { "key": "macaron", "name": "마카롱", "price": 2500, "kind": "food", "servings": 2, "model": "macaron", "color": "#f29ac0" },
+      { "key": "croffle", "name": "크로플", "price": 5500, "kind": "food", "servings": 5, "model": "plate", "color": "#d9a04a" }
+    ]
+  },
+  "library": {
+    "name": "시립 도서관 열람실",
+    "orderVerb": "",
+    "items": []
+  }
+}
